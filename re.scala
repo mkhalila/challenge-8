@@ -98,7 +98,11 @@ def ders (s: List[Char], r: Rexp) : Rexp = s match {
 	case c::cs => ders(cs, simp(der(c, r)))
 }
 
-//def matcher(r: Rexp, s: String): Boolean = ...
+def matcher(r: Rexp, s: String): Boolean = {
+	nullable(ders(s.toList, r))
+}
+
+println(matcher(SEQ(SEQ(CHAR('a'), CHAR('b')), CHAR('c')), "abc"))
 
 
 // (1e) Complete the function below: it searches (from the left to 
