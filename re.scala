@@ -73,16 +73,19 @@ def der (c: Char, r: Rexp) : Rexp = r match {
 // expressions
 
 def simp(r: Rexp) : Rexp = r match {
-  case SEQ(r, ZERO) => ZERO
-  case SEQ(ZERO, r) => ZERO
-  case SEQ(r, ONE) => simp(r)
-  case SEQ(ONE, r) => simp(r)
-  case ALT(r, ZERO) => simp(r)
-  case ALT(ZERO, r) => simp(r)
-  case ALT(r1, r2) => if (r1 == r2) simp(r1)
-                      else ALT(simp(r1), simp(r2))
-  case SEQ(r1, r2) => SEQ(simp(r1), simp(r2))
+    case SEQ(r1, r2) => if (simp(r2) == ZERO) ZERO
+		      else if (simp(r1) == ZERO) ZERO
+		      else if (simp(r2) == ONE) simp(r1)
+		      else if (simp(r1) == ONE) simp(r2)
+			  else SEQ(simp(r1), simp(r2))
+    case ALT(r1, r2) => if (simp(r2) == ZERO) simp(r1)
+						else if (simp(r1) == ZERO) simp(r2)
+						else if (simp(r1) == simp(r2)) simp(r1)
+						else ALT(simp(r1), simp(r2))
+    case _ => r
 }
+
+println(simp(ALT(SEQ(ALT("1",ZERO),ONE),SEQ(ALT(ALT(ONE,"2"),"3"),SEQ("4",ZERO)))))
 
 // (1d) Complete the two functions below; the first 
 // calculates the derivative w.r.t. a string; the second
@@ -90,9 +93,9 @@ def simp(r: Rexp) : Rexp = r match {
 // expression and a string and checks whether the
 // string matches the regular expression
 
-def ders (s: List[Char], r: Rexp) : Rexp = ... 
+//def ders (s: List[Char], r: Rexp) : Rexp = ... 
 
-def matcher(r: Rexp, s: String): Boolean = ...
+//def matcher(r: Rexp, s: String): Boolean = ...
 
 
 // (1e) Complete the function below: it searches (from the left to 
@@ -102,7 +105,7 @@ def matcher(r: Rexp, s: String): Boolean = ...
 // assumed to be non-overlapping. All these substrings in s1 are replaced
 // by s2.
 
-def replace(r: Rexp, s1: String, s2: String): String = ...
+//def replace(r: Rexp, s1: String, s2: String): String = ...
 
 
 
