@@ -93,7 +93,10 @@ println(simp(ALT(SEQ(ALT("1",ZERO),ONE),SEQ(ALT(ALT(ONE,"2"),"3"),SEQ("4",ZERO))
 // expression and a string and checks whether the
 // string matches the regular expression
 
-//def ders (s: List[Char], r: Rexp) : Rexp = ... 
+def ders (s: List[Char], r: Rexp) : Rexp = s match {
+	case Nil => r
+	case c::cs => ders(cs, simp(der(c, r)))
+}
 
 //def matcher(r: Rexp, s: String): Boolean = ...
 
