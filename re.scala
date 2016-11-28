@@ -72,7 +72,17 @@ def der (c: Char, r: Rexp) : Rexp = r match {
 // however it does not simplify inside STAR-regular
 // expressions
 
-def simp(r: Rexp) : Rexp = ... 
+def simp(r: Rexp) : Rexp = r match {
+  case SEQ(r, ZERO) => ZERO
+  case SEQ(ZERO, r) => ZERO
+  case SEQ(r, ONE) => simp(r)
+  case SEQ(ONE, r) => simp(r)
+  case ALT(r, ZERO) => simp(r)
+  case ALT(ZERO, r) => simp(r)
+  case ALT(r1, r2) => if (r1 == r2) simp(r1)
+                      else ALT(simp(r1), simp(r2))
+  case SEQ(r1, r2) => SEQ(simp(r1), simp(r2))
+}
 
 // (1d) Complete the two functions below; the first 
 // calculates the derivative w.r.t. a string; the second
