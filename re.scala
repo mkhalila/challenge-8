@@ -112,7 +112,39 @@ println(matcher(SEQ(SEQ(CHAR('a'), CHAR('b')), CHAR('c')), "abc"))
 // assumed to be non-overlapping. All these substrings in s1 are replaced
 // by s2.
 
-//def replace(r: Rexp, s1: String, s2: String): String = ...
+def recReplace(index: Int, r: Rexp, s1: String, s2: String, toReturn: String): List[String] = {
+  if (index >= s1.length) toReturn::Nil
+  else {
+    val subStrings = (for (i <- index to s1.length) yield s1.substring(index, i)).
+      filter(matcher(r, _)).sortBy(_.length).reverse
+    if (subStrings.head.isEmpty) {
+      if (index + 1 > s1.length) List(toReturn + s1.charAt(index))
+      else recReplace(index + 1, r, s1, s2, toReturn + s1.charAt(index))
+    }
+    else recReplace(index + subStrings.head.length, r, s1, s2, toReturn + s2)
+  }
+}
+
+def replaceRec(r: Rexp, s1: String, s2: String, current: String): String = {
+  if (!s1.isEmpty) {
+    val firstSub = s1.inits.toList.filter(matcher(r, _)).find(x => !x.isEmpty)
+    if (firstSub.isDefined) {
+      val remaining = s1.drop(firstSub.get.length)
+      replaceRec(r, remaining, s2, current + s2)
+    }
+    else {
+      val something = s1.head
+      replaceRec(r, s1.drop(1), s2, current + something)
+    }
+  }
+  else current
+}
+
+def replace(r: Rexp, s1: String, s2: String): String = {
+  replaceRec(r, s1, s2, "")
+}
+
+replace(ALT(STAR(SEQ(CHAR('a'), CHAR('a'))), SEQ(CHAR('b'), CHAR('b'))), "aabbbaaaaaaabaaaaabbaaaabb", "c")
 
 
 
