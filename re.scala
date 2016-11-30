@@ -128,14 +128,8 @@ def recReplace(index: Int, r: Rexp, s1: String, s2: String, toReturn: String): L
 def replaceRec(r: Rexp, s1: String, s2: String, current: String): String = {
   if (!s1.isEmpty) {
     val firstSub = s1.inits.toList.filter(matcher(r, _)).find(x => !x.isEmpty)
-    if (firstSub.isDefined) {
-      val remaining = s1.drop(firstSub.get.length)
-      replaceRec(r, remaining, s2, current + s2)
-    }
-    else {
-      val something = s1.head
-      replaceRec(r, s1.drop(1), s2, current + something)
-    }
+    if (firstSub.isDefined) replaceRec(r, s1.drop(firstSub.get.length), s2, current + s2)
+    else replaceRec(r, s1.drop(1), s2, current + s1.head)
   }
   else current
 }
@@ -144,14 +138,13 @@ def replace(r: Rexp, s1: String, s2: String): String = {
   replaceRec(r, s1, s2, "")
 }
 
-replace(ALT(STAR(SEQ(CHAR('a'), CHAR('a'))), SEQ(CHAR('b'), CHAR('b'))), "aabbbaaaaaaabaaaaabbaaaabb", "c")
+println(replace(ALT(STAR(SEQ(CHAR('a'), CHAR('a'))), SEQ(CHAR('b'), CHAR('b'))), "aabbbaaaaaaabaaaaabbaaaabb", "c"))
 
 
 
 // some testing data
 // the supposedly 'evil' regular expression (a*)* b
-/*
-val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
+/*val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
 println(matcher(EVIL, "a" * 1000 ++ "b"))
 println(matcher(EVIL, "a" * 1000))
 
@@ -165,7 +158,6 @@ def time_needed[T](i: Int, code: => T) = {
 
 for (i <- 1 to 5000001 by 500000) {
   println(i + " " + "%.5f".format(time_needed(2, matcher(EVIL, "a" * i))))
-}
-*/
+}*/
 
 
