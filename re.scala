@@ -85,7 +85,7 @@ def simp(r: Rexp) : Rexp = r match {
     case _ => r
 }
 
-println(simp(ALT(SEQ(ALT("1",ZERO),ONE),SEQ(ALT(ALT(ONE,"2"),"3"),SEQ("4",ZERO)))))
+simp(ALT(SEQ(ALT("1",ZERO),ONE),SEQ(ALT(ALT(ONE,"2"),"3"),SEQ("4",ZERO))))
 
 // (1d) Complete the two functions below; the first 
 // calculates the derivative w.r.t. a string; the second
@@ -102,7 +102,7 @@ def matcher(r: Rexp, s: String): Boolean = {
 	nullable(ders(s.toList, r))
 }
 
-println(matcher(SEQ(SEQ(CHAR('a'), CHAR('b')), CHAR('c')), "abc"))
+matcher(SEQ(SEQ(CHAR('a'), CHAR('b')), CHAR('c')), "abc")
 
 
 // (1e) Complete the function below: it searches (from the left to 
@@ -125,7 +125,7 @@ def replace(r: Rexp, s1: String, s2: String): String = {
   replaceRec(r, s1, s2, "")
 }
 
-println(replace(ALT(STAR(SEQ(CHAR('a'), CHAR('a'))), SEQ(CHAR('b'), CHAR('b'))), "aabbbaaaaaaabaaaaabbaaaabb", "c"))
+replace(ALT(STAR(SEQ(CHAR('a'), CHAR('a'))), SEQ(CHAR('b'), CHAR('b'))), "aabbbaaaaaaabaaaaabbaaaabb", "c")
 
 
 
