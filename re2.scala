@@ -106,28 +106,35 @@ import scala.annotation.tailrec
 @tailrec
 def iterT[A](n: Int, f: A => A, x: A): A = n match {
   case 0 => x
-  case _ => iterT(n, f, f(x))
+  case _ => iterT(n-1, f, f(x))
 }
 
 
 // (2b) Complete the size function for regular
 // expressions 
 
-def size(r: Rexp): Int = ...
+def size(r: Rexp): Int = r match {
+  case ZERO => 1
+  case ONE => 1
+  case CHAR(c) => 1
+  case ALT(r1, r2) => 1 + size(r1) + size(r2)
+  case SEQ(r1, r2) => 1 + size(r1) + size(r2)
+  case STAR(star) => 1 + size(star)
+}
 
 // two testcases about the sizes of simplified and 
 // un-simplified derivatives
 
-//val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
-//size(iterT(20, (r: Rexp) => der('a', r), EVIL))        // should produce 7340068
-//size(iterT(20, (r: Rexp) => simp(der('a', r)), EVIL))  // should produce 8
+val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
+println(size(iterT(20, (r: Rexp) => der('a', r), EVIL)))        // should produce 7340068
+println(size(iterT(20, (r: Rexp) => simp(der('a', r)), EVIL)))  // should produce 8
 
 
 
 // (2c) Complete the fixpoint function below.
 
-@tailrec
-def fixpT[A](f: A => A, x: A): A = ...
+/*@tailrec
+def fixpT[A](f: A => A, x: A): A = ...*/
 
 
 /* testcases
