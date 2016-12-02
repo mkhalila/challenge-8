@@ -104,17 +104,10 @@ def replace(r: Rexp, s1: String, s2: String): String = {
 import scala.annotation.tailrec
 
 @tailrec
-def tRecIterT[A](n: Int, f: A => A, x: A, acc: A): A = n match {
+def iterT[A](n: Int, f: A => A, x: A): A = n match {
   case 0 => x
-  case _ =>
-    val updatedAcc = f(acc)
-    tRecIterT(n - 1, f, x, updatedAcc)
+  case _ => iterT(n, f, f(x))
 }
-
-//@tailrec
-def iterT[A](n: Int, f: A => A, x: A): A =
-  tRecIterT(n, f, x, x)
-
 
 
 // (2b) Complete the size function for regular
