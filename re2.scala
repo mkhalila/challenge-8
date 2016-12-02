@@ -125,9 +125,9 @@ def size(r: Rexp): Int = r match {
 // two testcases about the sizes of simplified and 
 // un-simplified derivatives
 
-val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
-println(size(iterT(20, (r: Rexp) => der('a', r), EVIL)))        // should produce 7340068
-println(size(iterT(20, (r: Rexp) => simp(der('a', r)), EVIL)))  // should produce 8
+/*val EVIL = SEQ(STAR(STAR(CHAR('a'))), CHAR('b'))
+size(iterT(20, (r: Rexp) => der('a', r), EVIL))       // should produce 7340068
+size(iterT(20, (r: Rexp) => simp(der('a', r)), EVIL))  // should produce 8*/
 
 
 
@@ -140,7 +140,7 @@ def fixpT[A](f: A => A, x: A): A = {
 }
 
 
-// testcases
+/*// testcases
 
 //the Collatz function from CW 6 defined as fixpoint
 
@@ -149,12 +149,12 @@ def ctest(n: Long): Long =
     if (n % 2 == 0) n / 2 else 3 * n + 1
 
 // should all produce 1 
-println(fixpT(ctest, 97L))
-println(fixpT(ctest, 871L))
-println(fixpT(ctest, 77031L))
+fixpT(ctest, 97L)
+fixpT(ctest, 871L)
+fixpT(ctest, 77031L)*/
 
 
-// the same function on strings using the regular expression
+/*// the same function on strings using the regular expression
 // matcher
    
 def foo(s: String): String = {
@@ -164,6 +164,6 @@ def foo(s: String): String = {
 }
 
 // should all produce "a" 
-println(fixpT(foo, "a" * 97))
-println(fixpT(foo, "a" * 871))
+fixpT(foo, "a" * 97)
+fixpT(foo, "a" * 871)*/
 
