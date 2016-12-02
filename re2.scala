@@ -133,11 +133,14 @@ println(size(iterT(20, (r: Rexp) => simp(der('a', r)), EVIL)))  // should produc
 
 // (2c) Complete the fixpoint function below.
 
-/*@tailrec
-def fixpT[A](f: A => A, x: A): A = ...*/
+@tailrec
+def fixpT[A](f: A => A, x: A): A = {
+  val fx = f(x)
+  if (fx == x) x else fixpT(f, fx)
+}
 
 
-/* testcases
+// testcases
 
 //the Collatz function from CW 6 defined as fixpoint
 
@@ -146,13 +149,11 @@ def ctest(n: Long): Long =
     if (n % 2 == 0) n / 2 else 3 * n + 1
 
 // should all produce 1 
-fixpT(ctest, 97L)
-fixpT(ctest, 871L)
-fixpT(ctest, 77031L)
+println(fixpT(ctest, 97L))
+println(fixpT(ctest, 871L))
+println(fixpT(ctest, 77031L))
 
-*/
 
-/*
 // the same function on strings using the regular expression
 // matcher
    
@@ -163,7 +164,6 @@ def foo(s: String): String = {
 }
 
 // should all produce "a" 
-fixpT(foo, "a" * 97)
-fixpT(foo, "a" * 871)
+println(fixpT(foo, "a" * 97))
+println(fixpT(foo, "a" * 871))
 
-*/
