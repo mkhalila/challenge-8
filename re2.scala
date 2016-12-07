@@ -130,7 +130,6 @@ size(iterT(20, (r: Rexp) => der('a', r), EVIL))       // should produce 7340068
 size(iterT(20, (r: Rexp) => simp(der('a', r)), EVIL))  // should produce 8*/
 
 
-
 // (2c) Complete the fixpoint function below.
 
 @tailrec
